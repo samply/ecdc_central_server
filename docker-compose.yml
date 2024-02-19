@@ -38,7 +38,7 @@ services:
 
   # Backend
   spot:
-    image: samply/spot
+    image: samply/rustyspot
     container_name: spot
     env_file:
       - env.spot

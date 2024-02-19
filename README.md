@@ -65,10 +65,6 @@ cd lens
 git checkout ehds2
 vi packages/demo/src/AppECDC.svelte # Search for "spot" and replace URL with the one at your site
 docker build -t samply/lens --no-cache .
-cd
-git clone https://github.com/samply/spot.git
-cd spot
-docker build -t samply/spot --no-cache .
 cd /srv/docker/ecdc_central_server
 sudo mkdir -p letsencrypt conf/pki
 sudo vi .env # Modify to set correct values of Lens and Spot endpoints
