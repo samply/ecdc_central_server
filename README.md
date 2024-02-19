@@ -73,6 +73,7 @@ cd /srv/docker/ecdc_central_server
 sudo mkdir -p letsencrypt conf/pki
 sudo vi .env # Modify to set correct values of Lens and Spot endpoints
 sudo vi env.beam # Set the correct value for BROKER_ID
+sudo vi env.spot # Set the correct value for BROKER_ID
 ```
 
 ### Register with Samply.Beam
