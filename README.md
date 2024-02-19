@@ -1,14 +1,12 @@
 # ECDC Locator
 
-The Locator provides a GUI and a backend for running antibiotic-resistance-related queries against national nodes that have installed the [https://github.com/samply/bridgehead/tree/ehds2](Bridgehead).
+The Locator provides a GUI and a backend for running antibiotic-resistance-related queries against national nodes that have installed the [Bridgehead](https://github.com/samply/bridgehead/tree/ehds2).
 
 The GUI is called Lens, the backend is called Spot.
 
 ## Requirements
 
 The data protection group at your site will probably want to know exactly what our software does with patient data, and you may need to get their approval before you are allowed to install these components.
-
-- [Germany](https://www.bbmri.de/biobanking/it/infrastruktur/datenschutzkonzept/)
 
 ### Hardware
 
@@ -85,19 +83,17 @@ Instead, log on to the VM where Beam is running and perform the following (you w
 ```shell
 cd /srv/docker/beam-broker
 sudo mkdir -p csr
-sudo vi csr/ecdc-bridgehead-<national node name>.csr # Copy and paste the certificate printed during the enroll
-sudo pki-scripts/managepki sign --csr-file csr/ecdc-bridgehead-<national node name>.csr --common-name=ecdc-bridgehead-<national node name>.broker.bbmri.samply.de
+sudo vi csr/ecdc-locator.csr # Copy and paste the certificate printed during the enroll
+sudo pki-scripts/managepki sign --csr-file csr/ecdc-locator.csr --common-name=ecdc-locator.broker.bbmri.samply.de
 ```
 
-You can check that the Bridgehead has connected to Beam with the following command:
+You can check that the Locator has connected to Beam with the following command:
 ```shell
 pki-scripts/managepki list
 
 ```
 
 ### Starting and stopping
-
-If you followed the above steps, your Bridgehead should already be configured to autostart (via systemd). If you would like to start/stop manually:
 
 To start, run
 
