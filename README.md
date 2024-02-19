@@ -93,6 +93,8 @@ sudo vi csr/ecdc-locator.csr # Copy and paste the certificate printed during the
 sudo pki-scripts/managepki sign --csr-file csr/ecdc-locator.csr --common-name=ecdc-locator.broker.bbmri.samply.de
 ```
 
+Replace broker.bbmri.samply.de with your Beam broker ID.
+
 You can check that the Locator has connected to Beam with the following command:
 ```shell
 pki-scripts/managepki list
