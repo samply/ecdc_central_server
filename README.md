@@ -65,9 +65,14 @@ cd lens
 git checkout ehds2
 vi packages/demo/src/AppECDC.svelte # Search for "spot" and replace URL with the one at your site
 docker build -t samply/lens --no-cache .
+cd
+git clone https://github.com/samply/spot.git
+cd spot
+docker build -t samply/spot --no-cache .
 cd /srv/docker/ecdc_central_server
 sudo mkdir -p letsencrypt conf/pki
 sudo vi .env # Modify to set correct values of Lens and Spot endpoints
+sudo vi env.beam # Set the correct value for BROKER_ID
 ```
 
 ### Register with Samply.Beam
@@ -76,10 +81,11 @@ You will need to enroll with your Beam, using te [enroll software](https://githu
 
 ``` shell
 cd /srv/docker/ecdc_central_server
-sudo docker run --rm -ti -v ./conf/pki:/etc/bridgehead/pki samply/beam-enroll:latest --output-file $PRIVATEKEYFILENAME --proxy-id $PROXY_ID
+sudo docker run --rm -ti -v ./conf/pki:/etc/bridgehead/pki samply/beam-enroll:latest --output-file $PWD/conf/pki/ecdc-locator.priv.pem --proxy-id $PROXY_ID
 ```
+PROXY_ID is the full ID of the Beam proxy for the Locator, consult env.beam.
 
-Instead, log on to the VM where Beam is running and perform the following (you will need root permissions):
+Now, log on to the VM where Beam is running and perform the following (you will need root permissions):
 ```shell
 cd /srv/docker/beam-broker
 sudo mkdir -p csr
