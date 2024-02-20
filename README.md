@@ -78,7 +78,7 @@ You will need to enroll with your Beam, using te [enroll software](https://githu
 
 ``` shell
 cd /srv/docker/ecdc_central_server
-sudo docker run --rm -ti -v ./conf/pki:/etc/bridgehead/pki samply/beam-enroll:latest --output-file $PWD/conf/pki/ecdc-locator.priv.pem --proxy-id $PROXY_ID
+sudo docker run --rm -ti -v ./conf/pki:/etc/bridgehead/pki samply/beam-enroll:latest --output-file /etc/bridgehead/pki/ecdc-locator.priv.pem --proxy-id $PROXY_ID
 ```
 PROXY_ID is the full ID of the Beam proxy for the Locator, consult env.beam.
 
