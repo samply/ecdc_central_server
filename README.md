@@ -87,6 +87,8 @@ Now, log on to the VM where Beam is running and perform the following (you will 
 cd /srv/docker/beam-broker
 sudo mkdir -p csr
 sudo vi csr/ecdc-locator.csr # Copy and paste the certificate printed during the enroll
+export HTTP_PROXY=""
+export HTTPS_PROXY=""
 sudo pki-scripts/managepki sign --csr-file csr/ecdc-locator.csr --common-name=ecdc-locator.broker.bbmri.samply.de
 ```
 
