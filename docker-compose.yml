@@ -46,11 +46,11 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.spot-service.loadbalancer.server.port=8100"
       # HTTP
-      - "traefik.http.routers.spot-http-router.rule=Host(`${SPOT_DOMAIN}`)"
+      - "traefik.http.routers.spot-http-router.rule=Host(`${LENS_DOMAIN}`) && PathPrefix(`/beam`)"
       - "traefik.http.routers.spot-http-router.entrypoints=web"
       - "traefik.http.routers.spot-http-router.service=spot-service"
       # HTTPS
-      - "traefik.http.routers.spot-https-router.rule=Host(`${SPOT_DOMAIN}`)"
+      - "traefik.http.routers.spot-https-router.rule=Host(`${LENS_DOMAIN}`) && PathPrefix(`/beam`)"
       - "traefik.http.routers.spot-https-router.entrypoints=websecure"
       - "traefik.http.routers.spot-https-router.tls=true"
       - "traefik.http.routers.spot-https-router.service=spot-service"
