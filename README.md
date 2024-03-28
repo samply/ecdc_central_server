@@ -58,12 +58,12 @@ The following URLs need to be accessible on the machine hosting the Locator (pre
 Clone this repository:
 ```shell
 sudo mkdir -p /srv/docker/
-sudo git clone https://github.com/samply/ecdc_central_server.git /srv/docker/ecdc_central_server
-cd
-git clone https://github.com/samply/lens.git
+cd /srv/docker
+sudo git clone https://github.com/samply/ecdc_central_server.git
+sudo git clone https://github.com/samply/lens.git
 cd lens
-git checkout ehds2
-vi packages/demo/src/AppECDC.svelte # Search for "spot" and replace URL with the one at your site
+sudo git checkout ehds2
+sudo vi packages/demo/src/AppECDC.svelte # Search for "backendConfig", replace URL with Spot URL for your site, replace backends with Spot's Beam ID
 docker build -t samply/lens --no-cache .
 cd /srv/docker/ecdc_central_server
 sudo mkdir -p letsencrypt conf/pki
