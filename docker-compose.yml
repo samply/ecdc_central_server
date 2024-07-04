@@ -4,21 +4,22 @@ services:
     image: "traefik:v2.10"
     container_name: "traefik"
     command:
-      - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
+      - "--accesslog=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.le.acme.httpchallenge=true"
-      - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.le.acme.email=${LETS_ENCRYPT_EMAIL}"
-      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
+      - "--api.insecure=true"     
+      - "--api.dashboard=true"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.entryPoints=traefik"
+      - "traefik.http.routers.api.rule=PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
+      - "traefik.http.routers.api.service=api@internal"
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./letsencrypt:/letsencrypt"  # Let's Encrypt data persistence
 
   # GUI
   lens:
@@ -26,34 +27,29 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.lens-service.loadbalancer.server.port=80"
-      # HTTP
-      - "traefik.http.routers.lens-http-router.rule=Host(`${LENS_DOMAIN}`)"
-      - "traefik.http.routers.lens-http-router.entrypoints=web"
-      - "traefik.http.routers.lens-http-router.service=lens-service"
-      # HTTPS
       - "traefik.http.routers.lens-https-router.rule=Host(`${LENS_DOMAIN}`)"
-      - "traefik.http.routers.lens-https-router.entrypoints=websecure"
       - "traefik.http.routers.lens-https-router.tls=true"
       - "traefik.http.routers.lens-https-router.service=lens-service"
 
   # Backend
   spot:
-    image: samply/rustyspot
+    image: samply/spot
     container_name: spot
     env_file:
       - env.spot
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.spot-service.loadbalancer.server.port=8100"
-      # HTTP
-      - "traefik.http.routers.spot-http-router.rule=Host(`${LENS_DOMAIN}`) && PathPrefix(`/beam`)"
-      - "traefik.http.routers.spot-http-router.entrypoints=web"
-      - "traefik.http.routers.spot-http-router.service=spot-service"
-      # HTTPS
-      - "traefik.http.routers.spot-https-router.rule=Host(`${LENS_DOMAIN}`) && PathPrefix(`/beam`)"
-      - "traefik.http.routers.spot-https-router.entrypoints=websecure"
+      - "traefik.http.routers.spot-https-router.rule=Host(`${LENS_DOMAIN}`) && PathPrefix(`/backend`)"
       - "traefik.http.routers.spot-https-router.tls=true"
       - "traefik.http.routers.spot-https-router.service=spot-service"
+      - "traefik.http.middlewares.corsheaders.headers.accesscontrolallowmethods=GET,OPTIONS,POST"
+      - "traefik.http.middlewares.corsheaders.headers.accesscontrolalloworiginlist=http://${LENS_DOMAIN}"
+      - "traefik.http.middlewares.corsheaders.headers.accesscontrolallowcredentials=true"
+      - "traefik.http.middlewares.corsheaders.headers.accesscontrolmaxage=-1"
+      - "traefik.http.middlewares.ccp_b_strip.stripprefix.prefixes=/backend"
+        #- "traefik.http.routers.spot-https-router.rule=PathPrefix(`/backend`)"
+      - "traefik.http.routers.spot-https-router.middlewares=corsheaders,ccp_b_strip"
 
   # Beam proxy
   ecdc-locator:

@@ -61,10 +61,13 @@ sudo mkdir -p /srv/docker/
 cd /srv/docker
 sudo git clone https://github.com/samply/ecdc_central_server.git
 sudo git clone https://github.com/samply/lens.git
-cd lens
+sudo git clone https://github.com/samply/spot.git
+cd /srv/docker/lens
 sudo git checkout ehds2
 sudo vi packages/demo/src/AppECDC.svelte # Search for "backendConfig", replace URL with Spot URL for your site, replace backends with Spot's Beam ID
 docker build -t samply/lens --no-cache .
+cd /srv/docker/spot
+docker build -t samply/spot --no-cache .
 cd /srv/docker/ecdc_central_server
 sudo mkdir -p letsencrypt conf/pki
 sudo vi .env # Modify to set correct values of Lens and Spot endpoints
